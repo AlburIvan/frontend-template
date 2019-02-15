@@ -10,6 +10,7 @@ const sourcemaps = require('gulp-sourcemaps');
 const cleanCSS     = require("gulp-clean-css");
 const browsersync  = require("browser-sync").create();
 const autoprefixer = require("gulp-autoprefixer");
+const include      = require("gulp-include");
 
 // CSS task
 function css() {
@@ -42,6 +43,14 @@ function js() {
       './js/*.js',
       '!./js/*.min.js'
     ])
+    .pipe(include({
+      extensions: "js",
+      hardFail: true,
+      includePaths: [
+        __dirname + '/js',
+        __dirname + '/node_modules'
+      ]
+    })).on('error', console.log)
     .pipe(uglify())
     .pipe(rename({
       suffix: '.min'
