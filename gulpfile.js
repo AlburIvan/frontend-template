@@ -1,7 +1,7 @@
 // Load plugins
 const gulp   = require("gulp");
 const sass   = require("gulp-sass");
-const uglify = require("gulp-uglify");
+const uglify = require("gulp-uglifyes");
 
 const rename     = require("gulp-rename");
 const plumber    = require("gulp-plumber");
