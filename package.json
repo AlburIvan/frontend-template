@@ -1,31 +1,42 @@
 {
-    "title": "Template",
+    "title": "FrontEnd Template",
     "name": "starter-project",
-    "version": "2.1.0",
-    "description": "This is a boilerplate project",
+    "version": "1.0.0",
+    "description": "This is a boilerplate project configured with SCSS, Browsersync, and Pug ",
     "keywords": [
         "css",
         "sass",
+        "babel",
+        "ecma6",
         "html",
+        "pug",
         "theme",
         "template"
     ],
     "license": "MIT",
-    "author": "MaG",
+    "author": "Ivan Alburquerque",
     "dependencies": {
-        "jquery": "^3.3.1"
+       
+        "dom-confetti": "^0.1.1"
     },
     "devDependencies": {
+        "@babel/core": "^7.4.5",
+        "@babel/preset-env": "^7.4.5",
         "browser-sync": "^2.26.3",
+        "browserify": "^16.2.3",
+        "del": "^4.1.1",
         "gulp": "4.0.0",
         "gulp-autoprefixer": "6.0.0",
+        "gulp-babel": "^8.0.0",
         "gulp-clean-css": "4.0.0",
         "gulp-header": "2.0.7",
         "gulp-include": "^2.3.1",
         "gulp-plumber": "^1.2.1",
+        "gulp-pug": "^4.0.1",
         "gulp-rename": "1.4.0",
         "gulp-sass": "4.0.2",
         "gulp-sourcemaps": "^2.6.4",
-        "gulp-uglifyes": "^0.2.1"
+        "gulp-terser": "^1.2.0",
+        "watchify": "^3.11.1"
     }
 }

@@ -1,92 +1,230 @@
 // Load plugins
-const gulp   = require("gulp");
-const sass   = require("gulp-sass");
-const uglify = require("gulp-uglifyes");
+const browsersync  = require('browser-sync').create();
 
-const rename     = require("gulp-rename");
-const plumber    = require("gulp-plumber");
-const sourcemaps = require('gulp-sourcemaps');
+const gulp          = require('gulp');
+const sass          = require('gulp-sass');
+const terser        = require('gulp-terser');
 
-const cleanCSS     = require("gulp-clean-css");
-const browsersync  = require("browser-sync").create();
-const autoprefixer = require("gulp-autoprefixer");
-const include      = require("gulp-include");
+const rename        = require('gulp-rename');
+const plumber       = require('gulp-plumber');
+const sourcemaps    = require('gulp-sourcemaps');
+
+const cleanCSS      = require('gulp-clean-css');
+
+const autoprefixer  = require('gulp-autoprefixer');
+const include       = require('gulp-include');
+const browserify    = require('browserify');
+const watchify      = require('watchify');
+const babel         = require('gulp-babel');
+const pug           = require('gulp-pug');
+const del           = require('del');
+
+
+
+const paths = {
+  views: {
+    src: 'src/views/*.pug',
+    dest: './public',
+    watch: 'src/views/**/*.pug'
+  },
+  css: {
+    src: 'src/scss/*.scss',
+    dest: './public/css',
+    watch: 'src/scss/**/*.scss'
+  },
+  scripts: {
+    src: 'src/scripts/*.js',
+    dest: './public/js',
+    watch: 'src/scripts/**/*.js'
+  },
+  assets:  {
+    src: 'assets/**',
+    dest: 'public',
+    watch: 'assets/**'
+  }
+};
+
+
 
 // CSS task
-function css() {
+function compileSCSS() 
+{
   return gulp
-    .src("./scss/*.scss")
-    .pipe(plumber())
+    .src(paths.css.src)
     .pipe(sourcemaps.init())
-    .pipe(sass({
-      outputStyle: "expanded"
-    }))
-    .on("error", sass.logError)
-    .pipe(autoprefixer({
-      browsers: ['last 2 versions', 'safari 11', 'IE 11'],
-      cascade: false
-    }))
-    .pipe(sourcemaps.write())
-    .pipe(gulp.dest("./css"))
-    .pipe(rename({
-      suffix: ".min"
-    }))
+    .pipe(plumber())
+    .pipe(sass({ outputStyle: 'expanded' }))
+    .on('error', sass.logError)
+    .pipe(autoprefixer({ cascade: false }))
     .pipe(cleanCSS())
-    .pipe(gulp.dest("./css"))
+    .pipe(sourcemaps.write('.'))
+    .pipe(rename({ suffix: '.min'}))
+    .pipe(gulp.dest(paths.css.dest)) 
     .pipe(browsersync.stream());
 }
 
 // JS task
-function js() {
+function compileES6()
+{
   return gulp
-    .src([
-      './js/*.js',
-      '!./js/*.min.js'
-    ])
+    .src(paths.scripts.src)
+    .pipe(sourcemaps.init())
     .pipe(include({
-      extensions: "js",
+      extensions: 'js',
       hardFail: true,
       includePaths: [
-        __dirname + '/js',
+        __dirname + '/src',
         __dirname + '/node_modules'
       ]
-    })).on('error', console.log)
-    .pipe(uglify())
-    .pipe(rename({
-      suffix: '.min'
     }))
-    .pipe(gulp.dest('./js'))
+    .on('error', console.error)
+    .pipe(babel({ presets: ['@babel/env'] }))
+    .pipe(terser())
+    .pipe(rename({ suffix: '.min'}))
+    .pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest(paths.scripts.dest))
+    .pipe(browsersync.stream());
+
+
+    // https://github.com/simbo/gulp-watchify-browserify/blob/master/demo/gulpfile.js
+    // let bundler = browserify({
+    //   entries: 'public/js/app.min.js',
+    //   cache: {}, packageCache: {}, fullPaths: true, debug: true
+    // });
+  
+    // let bundle = function() {
+    //   return bundler
+    //     .bundle()
+    //     .on('error', function () {})
+    //     .pipe(source('public/js/main.js'))
+    //     .pipe(gulp.dest('public/js'));
+    // };
+  
+    // if(global.isWatching) {
+    //   bundler = watchify(bundler);
+    //   bundler.on('update', bundle);
+    // }
+  
+    // return bundle();
+
+}
+
+// HTML Engine task
+function compilePug()
+{
+
+  let pugOpts = {
+    basedir: './src/views',
+    pretty: true /* deprecated */
+  };
+
+  return gulp
+    .src(paths.views.src)
+    .pipe(pug(pugOpts))
+    .on('error', console.error)
+    .pipe(gulp.dest(paths.views.dest))
     .pipe(browsersync.stream());
 }
 
-// Tasks
-gulp.task("css", css);
-gulp.task("js", js);
+// Assets task
+function compileAssets()
+{
+  return gulp
+    .src(paths.assets.src, {
+      allowEmpty: true,
+      base: './'
+    })
+    .pipe(gulp.dest(paths.assets.dest))
+    .pipe(browsersync.stream());
+}
+
+
+// Optimize Images
+// function optimizeImages() {
+//   return gulp
+//     .src("./assets/img/**/*")
+//     .pipe(newer("./_site/assets/img"))
+//     .pipe(
+//       imagemin([
+//         imagemin.gifsicle({ interlaced: true }),
+//         imagemin.jpegtran({ progressive: true }),
+//         imagemin.optipng({ optimizationLevel: 5 }),
+//         imagemin.svgo({
+//           plugins: [
+//             {
+//               removeViewBox: false,
+//               collapseGroups: true
+//             }
+//           ]
+//         })
+//       ])
+//     )
+//     .pipe(gulp.dest("./_site/assets/img"));
+// }
+
+
+function clean()
+{
+  return del([
+    './public/assets/', 
+    './public/css/*.css', 
+    './public/js/*.js',
+    './public/*.html'
+  ]);
+}
 
 // BrowserSync
-function browserSync(done) {
-  browsersync.init({
+function browserSync(done) 
+{
+  let browserSyncOpts = {
     server: {
-      baseDir: "./"
+      baseDir: './public'
     }
-  });
+  }
+
+  browsersync.init(browserSyncOpts);
+
+  gulp.watch(paths.css.watch, gulp.series(compileSCSS, browserSyncReload));
+  gulp.watch(paths.scripts.watch, gulp.series(compileES6, browserSyncReload));
+  gulp.watch(paths.views.watch, gulp.series(compilePug, browserSyncReload))
+  gulp.watch(paths.assets.watch, gulp.series(compileAssets, browserSyncReload))
+
   done();
 }
 
-// BrowserSync Reload
-function browserSyncReload(done) {
+
+// Browser reload
+function browserSyncReload(done)
+{
   browsersync.reload();
   done();
 }
 
-// Watch files
-function watchFiles() {
-  gulp.watch("./scss/**/*", css);
-  gulp.watch(["./js/**/*.js", "!./js/*.min.js"], js);
-  gulp.watch("./**/*.html", browserSyncReload);
+// compile everything, copy assets folder, copy humans.txt, optimize images
+function productionRelease()
+{
+  // https://www.npmjs.com/package/gulp-inject-string
+  // https://www.npmjs.com/package/gulp-cachebust
 }
 
-gulp.task("default", gulp.parallel(css, js));
 
-// dev task
-gulp.task("dev", gulp.parallel(css, js, watchFiles, browserSync));
+// [Compile] tasks
+gulp.task('compile:scss', compileSCSS);
+gulp.task('compile:js', compileES6);
+gulp.task('compile:pug', compilePug);
+gulp.task('compile:assets', compileAssets);
+gulp.task('compile:default', gulp.parallel(compileSCSS, compileES6, compilePug, compileAssets));
+
+// [Watch] tasks
+gulp.task('watch:scss', () => { gulp.watch(paths.css.watch, gulp.series(compileSCSS)) });
+gulp.task('watch:js', () => { gulp.watch(paths.scripts.watch, gulp.series(compileES6)) });
+gulp.task('watch:pug', () => { gulp.watch(paths.views.watch, gulp.series(compilePug)) });
+gulp.task('watch:assets', () => { gulp.watch(paths.assets.watch, gulp.series(compileAssets)) });
+
+// [Development] Tasks
+gulp.task('run:dev', gulp.series(clean, compileSCSS, compileES6, compilePug, compileAssets, browserSync));
+// gulp.task('run:optimize', gulp.series(optimizeImages, copyAssets));
+gulp.task('run:clean', gulp.series(clean));
+
+// [Production] Tasks
+gulp.task('run:production', gulp.series(clean, productionRelease))
