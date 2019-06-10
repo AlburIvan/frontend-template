@@ -1,0 +1,11 @@
+/* Core variables and mixins */
+@import 'variables';
+@import 'mixins';
+
+/* Global CSS */
+@import 'global';
+@import 'typography';
+
+// Components
+@import 'header';
+@import 'footer';

@@ -1,0 +1,41 @@
+body {
+  color: $primary;
+  margin: 0;
+}
+
+
+.welcome {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 60px);
+
+  .confetti-cannon {
+    
+  }
+
+
+  & h1 {
+    color: #525252;
+    margin: 0;
+    text-align: center;
+    font-family: 'Whitney-Medium';
+    font-size: 3rem;
+    font-weight: 200;
+  }
+  
+  & h2 {
+    width: 100%;
+    color: #aeaeae;
+    text-align: center;
+    font-family: 'Whitney-Light';
+    font-size: 1.3rem;
+    font-weight: 200;
+
+    & img {
+      width: 25px;
+    }
+  }
+  
+}
