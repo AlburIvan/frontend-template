@@ -1,1 +1,32 @@
+# Node & Logs
+logs
+*.log
+npm-debug.log*
+
+# Coverage directory used by istanbul
+coverage
+
+# Dependency directory
 node_modules
+
+# Optional npm cache directory
+.npm
+
+# Sass
+.sass-cache/
+css/
+*.css.map
+*.css
+
+# js
+js/
+
+# Build output
+public/
+
+
+#Code Editor related
+.settings/
+.vscode/
+.idea/
+.sublime/
