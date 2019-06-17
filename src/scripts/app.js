@@ -1,5 +1,4 @@
-// const { confetti } = require('dom-confetti')
-import { confetti } from 'dom-confetti'
+const { confetti } = require('dom-confetti');
 
 const confettiCannon = document.querySelector('.confetti-cannon');
 
