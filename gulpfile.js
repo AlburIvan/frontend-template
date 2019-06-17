@@ -12,8 +12,9 @@ const sourcemaps    = require('gulp-sourcemaps');
 const cleanCSS      = require('gulp-clean-css');
 
 const autoprefixer  = require('gulp-autoprefixer');
-const include       = require('gulp-include');
 const browserify    = require('browserify');
+const buffer        = require('vinyl-buffer');
+const tap           = require('gulp-tap');
 const watchify      = require('watchify');
 const babel         = require('gulp-babel');
 const pug           = require('gulp-pug');
@@ -50,11 +51,11 @@ const paths = {
 function compileSCSS() 
 {
   return gulp
+    .on('error', sass.logError)
     .src(paths.css.src)
     .pipe(sourcemaps.init())
     .pipe(plumber())
     .pipe(sass({ outputStyle: 'expanded' }))
-    .on('error', sass.logError)
     .pipe(autoprefixer({ cascade: false }))
     .pipe(cleanCSS())
     .pipe(sourcemaps.write('.'))
@@ -66,46 +67,20 @@ function compileSCSS()
 // JS task
 function compileES6()
 {
-  return gulp
-    .src(paths.scripts.src)
-    .pipe(sourcemaps.init())
-    .pipe(include({
-      extensions: 'js',
-      hardFail: true,
-      includePaths: [
-        __dirname + '/src',
-        __dirname + '/node_modules'
-      ]
-    }))
-    .on('error', console.error)
-    .pipe(babel({ presets: ['@babel/env'] }))
-    .pipe(terser())
-    .pipe(rename({ suffix: '.min'}))
-    .pipe(sourcemaps.write('.'))
-    .pipe(gulp.dest(paths.scripts.dest))
-    .pipe(browsersync.stream());
-
-
-    // https://github.com/simbo/gulp-watchify-browserify/blob/master/demo/gulpfile.js
-    // let bundler = browserify({
-    //   entries: 'public/js/app.min.js',
-    //   cache: {}, packageCache: {}, fullPaths: true, debug: true
-    // });
-  
-    // let bundle = function() {
-    //   return bundler
-    //     .bundle()
-    //     .on('error', function () {})
-    //     .pipe(source('public/js/main.js'))
-    //     .pipe(gulp.dest('public/js'));
-    // };
-  
-    // if(global.isWatching) {
-    //   bundler = watchify(bundler);
-    //   bundler.on('update', bundle);
-    // }
-  
-    // return bundle();
+    return gulp
+      .src(paths.scripts.src, { read: true })
+      .pipe(babel({ presets: ['@babel/env'] }))
+      .pipe(tap( file => {
+        file.contents = browserify(file.path, { debug: true }).bundle();
+      }))
+      .pipe(buffer())
+      .pipe(sourcemaps.init({ loadMaps: true }))
+     
+      .pipe(terser())
+      .pipe(rename({ suffix: '.min'}))
+      .pipe(sourcemaps.write('.'))
+      .pipe(gulp.dest(paths.scripts.dest))
+      .pipe(browsersync.stream());
 
 }
 

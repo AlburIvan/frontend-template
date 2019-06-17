@@ -16,7 +16,6 @@
     "license": "MIT",
     "author": "Ivan Alburquerque",
     "dependencies": {
-       
         "dom-confetti": "^0.1.1"
     },
     "devDependencies": {
@@ -36,7 +35,9 @@
         "gulp-rename": "1.4.0",
         "gulp-sass": "4.0.2",
         "gulp-sourcemaps": "^2.6.4",
+        "gulp-tap": "^1.0.1",
         "gulp-terser": "^1.2.0",
+        "vinyl-buffer": "^1.0.1",
         "watchify": "^3.11.1"
     }
 }
