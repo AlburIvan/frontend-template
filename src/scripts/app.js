@@ -1,10 +1,7 @@
-// import { confetti } from 'dom-confetti';
-console.log('Welcome to my template, to begin editing, go to `src` folder and start hacking away!')
+// const { confetti } = require('dom-confetti')
+import { confetti } from 'dom-confetti'
 
-
-let confettiCannon = document.querySelector('.confetti-cannon');
-
-
+const confettiCannon = document.querySelector('.confetti-cannon');
 
 const confettiOpts = {
   angle: 90,
@@ -19,5 +16,6 @@ const confettiOpts = {
   colors: ["#a864fd", "#29cdff", "#78ff44", "#ff718d", "#fdff6a"]
 };
 
+confetti(confettiCannon, confettiOpts);
 
-// confetti(confettiCannon, confettiOpts);
+console.log('Welcome to my template, to begin editing, go to `src` folder and start hacking away!')
