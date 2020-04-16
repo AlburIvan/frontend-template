@@ -1,8 +1,8 @@
 {
     "title": "FrontEnd Template",
-    "name": "starter-project",
+    "name": "frontend-starter-kit",
     "version": "1.0.0",
-    "description": "This is a boilerplate project configured with SCSS, Browsersync, and Pug ",
+    "description": "This is a boilerplate starter kit configured with SCSS, ES6, Tailwind, Browsersync, and Pug",
     "keywords": [
         "css",
         "sass",
@@ -10,34 +10,40 @@
         "ecma6",
         "html",
         "pug",
+        "tailwind",
+        "postcss",
+        "purgecss",
         "theme",
         "template"
     ],
     "license": "MIT",
     "author": "Ivan Alburquerque",
     "dependencies": {
-        "dom-confetti": "^0.1.1"
+        "dom-confetti": "^0.1.1",
+        "gulp-inject-string": "^1.1.2",
+        "tailwindcss": "^1.2.0",
+        "vue": "^2.6.11"
     },
     "devDependencies": {
         "@babel/core": "^7.4.5",
         "@babel/preset-env": "^7.4.5",
+        "autoprefixer": "^9.7.5",
         "browser-sync": "^2.26.3",
         "browserify": "^16.2.3",
+        "cssnano": "^4.1.10",
         "del": "^4.1.1",
         "gulp": "4.0.0",
-        "gulp-autoprefixer": "6.0.0",
         "gulp-babel": "^8.0.0",
-        "gulp-clean-css": "4.0.0",
-        "gulp-header": "2.0.7",
-        "gulp-include": "^2.3.1",
-        "gulp-plumber": "^1.2.1",
+        "gulp-postcss": "^8.0.0",
         "gulp-pug": "^4.0.1",
+        "gulp-purgecss": "^2.1.2",
         "gulp-rename": "1.4.0",
-        "gulp-sass": "4.0.2",
+        "gulp-sass": "^4.0.2",
         "gulp-sourcemaps": "^2.6.4",
         "gulp-tap": "^1.0.1",
         "gulp-terser": "^1.2.0",
-        "vinyl-buffer": "^1.0.1",
-        "watchify": "^3.11.1"
+        "node-sass": "^4.13.1",
+        "postcss": "^7.0.27",
+        "vinyl-buffer": "^1.0.1"
     }
 }

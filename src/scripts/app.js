@@ -1,6 +1,7 @@
 const { confetti } = require('dom-confetti');
 
 const confettiCannon = document.querySelector('.confetti-cannon');
+const copyrightYear = document.querySelector('#year');
 
 const confettiOpts = {
   angle: 90,
@@ -16,5 +17,8 @@ const confettiOpts = {
 };
 
 confetti(confettiCannon, confettiOpts);
+
+copyrightYear.textContent = new Date().getFullYear();
+
 
 console.log('Welcome to my template, to begin editing, go to `src` folder and start hacking away!')

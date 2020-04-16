@@ -1,34 +1,36 @@
-@font-face {
-  font-family: 'Whitney-Semibold';
-  src: url('/assets/fonts/Whitney-Semibold.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-}
+
 
 @font-face {
-  font-family: 'Whitney-Light';
+  font-family: 'Whitney';
   src: url('/assets/fonts/Whitney-Light.woff2') format('woff2');
   font-weight: 300;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Whitney-Book';
+  font-family: 'Whitney';
   src: url('/assets/fonts/Whitney-Book.woff2') format('woff2');
-  font-weight: 500;
+  font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Whitney-Medium';
+  font-family: 'Whitney';
   src: url('/assets/fonts/Whitney-Medium.woff2') format('woff2');
   font-weight: 500;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Whitney-Bold';
+  font-family: 'Whitney';
+  src: url('/assets/fonts/Whitney-Semibold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Whitney';
   src: url('/assets/fonts/Whitney-Bold.woff2') format('woff2');
-  font-weight: bold;
+  font-weight: 700;
   font-style: normal;
 }
